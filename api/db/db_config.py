@@ -20,7 +20,13 @@ def init_db():
         """CREATE TABLE IF NOT EXISTS addresses
                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
                   address TEXT UNIQUE,
-                  currency TEXT)"""
+                  label TEXT,
+                  balance REAL,
+                  currency TEXT,
+                  creation_date TIMESTAMP,
+                  last_used TIMESTAMP,
+                  description TEXT,
+                  status TEXT)"""
     )
 
     conn.commit()
