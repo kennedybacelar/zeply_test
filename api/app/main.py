@@ -2,6 +2,7 @@ import os
 import uvicorn
 from fastapi import FastAPI
 from models.models import Coin
+from db.db_config import init_db
 
 app = FastAPI()
 PORT = os.environ["PORT"]
@@ -27,5 +28,10 @@ def get_addresses():
     pass
 
 
+@app.on_event("startup")
+async def startup_event():
+    init_db()
+
+
 if __name__ == "__main__":
-    uvicorn.run("api.main:app", host="0.0.0.0", port=8020, reload=True)
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8020, reload=True)

@@ -12,4 +12,4 @@ services:
       - PORT=8020
     ports:
       - 8020:8020
-    command: sh -c "pip install -r requirements.txt && python -m api.main"
+    command: sh -c "pip install -r requirements.txt && python -m app.main"
