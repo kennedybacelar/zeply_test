@@ -1,0 +1,42 @@
+# Compiled Python files
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+env/
+.venv/
+env_bak/
+*.egg-info/
+dist/
+build/
+tox/
+.cache/
+.pytest_cache/
+
+# Logs
+*.log
+*.swp
+*.swo
+
+# Editors
+.vscode/
+.idea/
+*.iml
+*.ipynb_checkpoints
+
+# Other
+.DS_Store
+*.pyc
+*.bak
+*.sql
+*.sqlite3
+*.csv
+*.pdf
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.svg
+*.wav
+*.mp3

@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  api:
+    container_name: api
+    image: python:3.10
+    volumes:
+      - ./api:/api
+    working_dir: /api
+    environment:
+      - PYTHONUNBUFFERED=1
+    ports:
+      - 8050:8050
+    command: sh -c "pip install -r requirements.txt && python -m api.main"
