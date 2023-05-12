@@ -3,28 +3,29 @@ import uvicorn
 from fastapi import FastAPI
 from models.models import Coin
 from db.db_config import init_db
+from .core import generate_address
 
-app = FastAPI()
-PORT = os.environ["PORT"]
+app = FastAPI(title="Zeply REST API")
+PORT = os.environ.get("PORT") or 8020
 
 
 @app.get("/")
-def home():
+def home_():
     return {"message": "zeply test"}
 
 
-@app.post("/addresses/generate")
-async def generate_address(coin: Coin):
-    pass
+@app.post("/addresses/generate/{coin}")
+async def generate_address_(coin: Coin):
+    return generate_address(coin)
 
 
 @app.get("/addresses/{address_id}")
-def get_address(address_id: int):
+def get_address_(address_id: int):
     pass
 
 
 @app.get("/addresses")
-def get_addresses():
+def get_addresses_():
     pass
 
 
