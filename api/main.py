@@ -7,6 +7,11 @@ app = FastAPI()
 PORT = os.environ["PORT"]
 
 
+@app.get("/")
+def home():
+    return {"message": "zeply test"}
+
+
 @app.post("/addresses/generate")
 async def generate_address(coin: Coin):
     pass
