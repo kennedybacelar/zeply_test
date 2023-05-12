@@ -1,6 +1,14 @@
+from typing import List
 import sqlite3
 
 DB_STR_CONNECTION = "file::memory:?cache=shared"
+
+
+def get_table_column_names(table_name: str) -> List[str]:
+    with get_db_connection() as conn:
+        col_data = conn.execute(f"PRAGMA table_info({table_name});").fetchall()
+        columns = [entry[1] for entry in col_data]
+    return columns
 
 
 def init_db():
@@ -19,5 +27,5 @@ def init_db():
     conn.close()
 
 
-def get_db_connection():
+def get_db_connection() -> sqlite3.Connection:
     return sqlite3.connect("file::memory:?cache=shared")
