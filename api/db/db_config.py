@@ -3,7 +3,8 @@ import sqlite3
 
 def init_db():
 
-    conn = sqlite3.connect("mydatabase.db")
+    # conn = sqlite3.connect(":memory:", isolation_level=None)
+    conn = sqlite3.connect("file::memory:?cache=shared")
     c = conn.cursor()
 
     c.execute(
@@ -15,3 +16,7 @@ def init_db():
 
     conn.commit()
     conn.close()
+
+
+def get_db_connection():
+    return sqlite3.connect("file::memory:?cache=shared")
