@@ -1,10 +1,11 @@
 import sqlite3
 
+DB_STR_CONNECTION = "file::memory:?cache=shared"
+
 
 def init_db():
 
-    # conn = sqlite3.connect(":memory:", isolation_level=None)
-    conn = sqlite3.connect("file::memory:?cache=shared")
+    conn = sqlite3.connect(DB_STR_CONNECTION)
     c = conn.cursor()
 
     c.execute(

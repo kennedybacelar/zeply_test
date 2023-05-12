@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, List
 import secrets
 from pycoin.key import Key
 from pycoin.networks.registry import network_for_netcode
@@ -17,10 +17,12 @@ def _insert_address(address: str, currency: str) -> Tuple:
             "INSERT INTO addresses (address, currency) VALUES (?, ?)",
             (address, currency),
         )
+        col_data = conn.execute(f"PRAGMA table_info(addresses);").fetchall()
+        columns = [entry[1] for entry in col_data]
 
-        return c.execute(
-            "SELECT * FROM addresses WHERE id=?", (c.lastrowid,)
-        ).fetchone()
+        row = c.execute("SELECT * FROM addresses WHERE id=?", (c.lastrowid,)).fetchone()
+
+        return dict(zip(columns, row))
 
 
 def generate_address(coin: Coin):

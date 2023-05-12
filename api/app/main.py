@@ -2,7 +2,7 @@ import os
 import uvicorn
 from fastapi import FastAPI
 from models.models import Coin
-from db.db_config import init_db
+from db.db_config import init_db, DB_STR_CONNECTION
 from .core import generate_address
 
 app = FastAPI(title="Zeply REST API")
@@ -32,6 +32,11 @@ def get_addresses_():
 @app.on_event("startup")
 async def startup_event():
     init_db()
+
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    os.remove(DB_STR_CONNECTION)
 
 
 if __name__ == "__main__":
