@@ -1,3 +1,4 @@
+import secrets
 from pycoin.key import Key
 from pycoin.networks.registry import network_for_netcode
 from models.models import Coin
@@ -9,6 +10,6 @@ coin_vs_network = {
 
 def generate_address(coin: Coin):
     coin_network = coin_vs_network[coin]
-    key = coin_network.keys.private(secret_exponent=1)
+    key = coin_network.keys.private(secret_exponent=secrets.randbits(256))
 
     return key.address()
