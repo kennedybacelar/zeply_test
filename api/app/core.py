@@ -2,46 +2,33 @@ from typing import Tuple, List
 import secrets
 from pycoin.key import Key
 from pycoin.networks.registry import network_for_netcode
-from models.models import Coin
-from db.db_config import get_db_connection, get_table_column_names
+from models.models import Coin, AddressCreate, AddressInDB
+from db.db_config import get_db_connection, Addresses
 
 coin_vs_network = {
     Coin.BTC: network_for_netcode("XTN"),  # XTN represents the BTC Testnet network
 }
 
 
-def generate_address(coin: Coin):
+def _generate_address(coin: Coin):
     coin_network = coin_vs_network[coin]
     key = coin_network.keys.private(secret_exponent=secrets.randbits(256))
 
-    return _insert_address(key.address(), coin.value)
+    return key.address()
 
 
 def get_address(id: int):
-    table_name = "addresses"
-    with get_db_connection() as conn:
-        c = conn.cursor()
-        row = c.execute(f"SELECT * FROM {table_name} WHERE id = {id}")
-    columns = get_table_column_names(table_name="addresses")
-    return dict(zip(columns, row))
+    with get_db_connection():
+        address = Addresses.get_or_none(id=id)
+    return AddressInDB(**(address.__data__)) if address else None
 
 
-def list_addresses():
-    table_name = "addresses"
-    with get_db_connection() as conn:
-        c = conn.cursor()
-        rows = c.execute(f"SELECT * FROM {table_name}").fetchall()
-    columns = get_table_column_names(table_name)
-    return [dict(zip(columns, row)) for row in rows]
+def list_addresses() -> List[dict]:
+    addresses = Addresses.select().dicts()
+    return [address for address in addresses]
 
 
-def _insert_address(address: str, currency: str) -> Tuple:
-    with get_db_connection() as conn:
-        c = conn.cursor()
-        c.execute(
-            "INSERT INTO addresses (address, currency) VALUES (?, ?)",
-            (address, currency),
-        )
-        row = c.execute("SELECT * FROM addresses WHERE id=?", (c.lastrowid,)).fetchone()
-    columns = get_table_column_names(table_name="addresses")
-    return dict(zip(columns, row))
+def create_address(address: AddressCreate) -> AddressCreate:
+    address.address = _generate_address(address.currency)
+    _address = Addresses.create(**dict(address))
+    return _address.__data__

@@ -1,3 +1,4 @@
 uvicorn==0.17.6
 fastapi==0.95.1
 pycoin==0.92.20230326
+peewee==3.16.2

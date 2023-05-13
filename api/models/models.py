@@ -10,10 +10,10 @@ class Coin(str, Enum):
 
 
 class AddressCreate(BaseModel):
-    address: str
+    address: Optional[str]
     label: Optional[str]
     balance: Optional[float]
-    currency: str
+    currency: Coin
     creation_date: Optional[datetime]
     last_used: Optional[datetime]
     description: Optional[str]
