@@ -1,7 +1,7 @@
 import os
 import uvicorn
 from fastapi import FastAPI
-from models.models import Coin
+from models.models import Coin, AddressCreate
 from db.db_config import init_db, DB_STR_CONNECTION
 from .core import generate_address, list_addresses, get_address
 
@@ -16,7 +16,7 @@ def home_():
 
 @app.post("/addresses/generate/{coin}")
 async def generate_address_(coin: Coin):
-    return generate_address(coin)
+    return generate_address(AddressCreate)
 
 
 @app.get("/addresses/{address_id}")

@@ -20,7 +20,5 @@ class AddressCreate(BaseModel):
     status: Optional[str]
 
 
-class AddressInDB(BaseModel):
+class AddressInDB(AddressCreate):
     id: int
-    address: str
-    currency: str
