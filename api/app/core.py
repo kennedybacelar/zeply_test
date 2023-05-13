@@ -23,7 +23,7 @@ def get_address(id: int):
     return AddressInDB(**(address.__data__)) if address else None
 
 
-def list_addresses() -> List[dict]:
+def list_addresses() -> List[AddressInDB]:
     addresses = Addresses.select().dicts()
     return [address for address in addresses]
 
@@ -31,4 +31,4 @@ def list_addresses() -> List[dict]:
 def create_address(address: AddressCreate) -> AddressCreate:
     address.address = _generate_address(address.currency)
     _address = Addresses.create(**dict(address))
-    return _address.__data__
+    return AddressInDB(**(_address.__data__))
