@@ -22,3 +22,12 @@ class AddressCreate(BaseModel):
 
 class AddressInDB(AddressCreate):
     id: int
+
+
+class PrivateKeyCreate(BaseModel):
+    address_id: int
+    key: bytes
+
+
+class PrivateKeyInDB(PrivateKeyCreate):
+    id: int

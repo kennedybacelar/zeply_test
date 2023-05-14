@@ -22,6 +22,16 @@ class Addresses(Model):
         table_name = "addresses"
 
 
+class PrivateKeys(Model):
+    id = AutoField()
+    address = ForeignKeyField(Addresses, backref="private_keys")
+    key = BlobField(null=False)
+
+    class Meta:
+        database = db
+        table_name = "private_keys"
+
+
 def get_db_connection() -> SqliteDatabase:
     return SqliteDatabase(DB_STR_CONNECTION)
 
