@@ -41,5 +41,6 @@ tox/
 *.wav
 *.mp3
 
+*.key
 *.db
 api/file::memory:?cache=shared
