@@ -9,7 +9,7 @@ from eth_account import Account
 
 def _generate_address(coin: Coin):
     def generate_address_bitcoin():
-        # XTN represents the BTC Testnet network
+        # XTN is the code for BTC Testnet network
         coin_network = network_for_netcode("XTN")
         key = coin_network.keys.private(secret_exponent=secrets.randbits(256))
 
