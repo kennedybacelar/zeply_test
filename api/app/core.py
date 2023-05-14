@@ -7,20 +7,11 @@ from db.db_config import get_db_connection, Addresses
 from web3 import Web3, EthereumTesterProvider
 from eth_account import Account
 
-coin_vs_network = {
-    Coin.BTC: network_for_netcode("XTN"),  # XTN represents the BTC Testnet network
-}
-
 
 def _generate_address(coin: Coin):
-
-    coin_vs_function = {
-        Coin.BTC: generate_address_bitcoin,
-        Coin.ETH: generate_address_ethereum,
-    }
-
     def generate_address_bitcoin():
-        coin_network = coin_vs_network[coin]
+        # XTN represents the BTC Testnet network
+        coin_network = network_for_netcode("XTN")
         key = coin_network.keys.private(secret_exponent=secrets.randbits(256))
 
         return key.address()
@@ -32,6 +23,11 @@ def _generate_address(coin: Coin):
         private_key = account._private_key.hex()
 
         return address
+
+    coin_vs_function = {
+        Coin.BTC: generate_address_bitcoin,
+        Coin.ETH: generate_address_ethereum,
+    }
 
     return coin_vs_function[coin]()
 
