@@ -4,6 +4,8 @@ from pycoin.key import Key
 from pycoin.networks.registry import network_for_netcode
 from models.models import Coin, AddressCreate, AddressInDB
 from db.db_config import get_db_connection, Addresses
+from web3 import Web3, EthereumTesterProvider
+from eth_account import Account
 
 coin_vs_network = {
     Coin.BTC: network_for_netcode("XTN"),  # XTN represents the BTC Testnet network
@@ -11,10 +13,27 @@ coin_vs_network = {
 
 
 def _generate_address(coin: Coin):
-    coin_network = coin_vs_network[coin]
-    key = coin_network.keys.private(secret_exponent=secrets.randbits(256))
 
-    return key.address()
+    coin_vs_function = {
+        Coin.BTC: generate_address_bitcoin,
+        Coin.ETH: generate_address_ethereum,
+    }
+
+    def generate_address_bitcoin():
+        coin_network = coin_vs_network[coin]
+        key = coin_network.keys.private(secret_exponent=secrets.randbits(256))
+
+        return key.address()
+
+    def generate_address_ethereum():
+        w3 = Web3(EthereumTesterProvider())
+        account = Account.create()
+        address = account.address
+        private_key = account._private_key.hex()
+
+        return address
+
+    return coin_vs_function[coin]()
 
 
 def get_address(id: int):
