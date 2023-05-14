@@ -22,11 +22,11 @@ def load_fernet_key_from_file() -> Union[bytes, str]:
     return Fernet(key)
 
 
-def encrypt_private_key(private_key: str, key: str) -> bytes:
+def encrypt_private_key(private_key: str) -> bytes:
     fernet_key = load_fernet_key_from_file()
     return fernet_key.encrypt(private_key.encode())
 
 
-def decrypt_private_key(encrypted_key: bytes, key: str) -> str:
+def decrypt_private_key(encrypted_key: bytes) -> str:
     fernet_key = load_fernet_key_from_file()
     return fernet_key.decrypt(encrypted_key).decode()

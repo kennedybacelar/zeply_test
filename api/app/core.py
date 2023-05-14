@@ -8,20 +8,22 @@ from eth_account import Account
 
 
 def _generate_address(coin: Coin):
-    def generate_address_bitcoin():
-        # XTN is the code for BTC Testnet network
-        coin_network = network_for_netcode("XTN")
-        key = coin_network.keys.private(secret_exponent=secrets.randbits(256))
+    """Generate a Bitcoin address and its corresponding private key in WIF (Wallet Import Format) format."""
 
-        return key.address()
+    def generate_address_bitcoin():
+        coin_network = network_for_netcode("XTN")  # Use the BTC Testnet network
+        key = coin_network.keys.private(secret_exponent=secrets.randbits(256))
+        address = key.address()
+        private_key = key.sec_as_hex()
+        return address, private_key
 
     def generate_address_ethereum():
         w3 = Web3(EthereumTesterProvider())
-        account = Account.create()
+        account = w3.eth.account.create()
         address = account.address
         private_key = account._private_key.hex()
 
-        return address
+        return address, private_key
 
     coin_vs_function = {
         Coin.BTC: generate_address_bitcoin,
@@ -43,6 +45,12 @@ def list_addresses() -> List[AddressInDB]:
 
 
 def create_address(address: AddressCreate) -> AddressCreate:
-    address.address = _generate_address(address.currency)
+    address.address, private_key = _generate_address(address.currency)
+    print(private_key)
+    print(type(private_key))
     _address = Addresses.create(**dict(address))
     return AddressInDB(**(_address.__data__))
+
+
+def process_address_data_insertion():
+    pass
