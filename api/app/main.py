@@ -7,6 +7,8 @@ from db.db_config import init_db, DB_STR_CONNECTION
 from .core import process_address_data_insertion, list_addresses, get_address
 from .utils import dev_fernet_key_setup, FERNET_KEY_FILE_PATH
 
+__author__ = "Kennedy Bacelar"
+
 app = FastAPI(title="Zeply REST API")
 PORT = os.environ.get("PORT") or 8020
 
