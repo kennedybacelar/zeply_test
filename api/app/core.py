@@ -14,7 +14,15 @@ from .utils import encrypt_private_key
 
 
 def _generate_address_and_private_key(coin: Coin):
-    """Generate a Bitcoin address and its corresponding private key in WIF (Wallet Import Format) format."""
+    """
+    Generate a cryptocurrency address and its corresponding private key in hexadecimal format,
+    based on the specified cryptocurrency coin type.
+
+    Currently, Bitcoin and Ethereum coins are supported. For Bitcoin, the address is generated using the BTC Testnet network
+    and for Ethereum, a new account is created using the EthereumTesterProvider from Web3.
+
+    The private key is returned as a hexadecimal string.
+    """
 
     def generate_address_bitcoin():
         coin_network = network_for_netcode("XTN")  # Use the BTC Testnet network
