@@ -1,6 +1,5 @@
-from typing import Tuple, List
+from typing import List
 import secrets
-from pycoin.key import Key
 from pycoin.networks.registry import network_for_netcode
 from models.models import Coin, AddressCreate, AddressInDB
 from db.db_config import get_db_connection, Addresses
