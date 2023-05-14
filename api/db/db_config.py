@@ -38,5 +38,5 @@ def get_db_connection() -> SqliteDatabase:
 
 def init_db():
     db.connect()
-    db.create_tables([Addresses])
+    db.create_tables([Addresses, PrivateKeys])
     db.close()

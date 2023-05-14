@@ -4,7 +4,8 @@ from fastapi import FastAPI
 from models.models import AddressCreate
 from db.db_config import init_db, DB_STR_CONNECTION
 
-from .core import create_address, list_addresses, get_address
+from .core import process_address_data_insertion, list_addresses, get_address
+from .utils import dev_fernet_key_setup, FERNET_KEY_FILE_PATH
 
 app = FastAPI(title="Zeply REST API")
 PORT = os.environ.get("PORT") or 8020
@@ -17,8 +18,7 @@ def home_():
 
 @app.post("/addresses/generate")
 async def generate_address_(address: AddressCreate):
-    # return generate_address(AddressCreate())
-    return create_address(address)
+    return process_address_data_insertion(address)
 
 
 @app.get("/addresses/{address_id}")
@@ -34,11 +34,13 @@ def list_addresses_():
 @app.on_event("startup")
 async def startup_event():
     init_db()
+    dev_fernet_key_setup()
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
     os.remove(DB_STR_CONNECTION)
+    os.remove(FERNET_KEY_FILE_PATH)
 
 
 if __name__ == "__main__":

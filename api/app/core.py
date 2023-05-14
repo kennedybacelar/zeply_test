@@ -1,13 +1,19 @@
 from typing import List
 import secrets
 from pycoin.networks.registry import network_for_netcode
-from models.models import Coin, AddressCreate, AddressInDB
-from db.db_config import get_db_connection, Addresses
+from models.models import (
+    Coin,
+    AddressCreate,
+    AddressInDB,
+    PrivateKeyCreate,
+    PrivateKeyInDB,
+)
+from db.db_config import get_db_connection, Addresses, PrivateKeys
 from web3 import Web3, EthereumTesterProvider
-from eth_account import Account
+from .utils import encrypt_private_key
 
 
-def _generate_address(coin: Coin):
+def _generate_address_and_private_key(coin: Coin):
     """Generate a Bitcoin address and its corresponding private key in WIF (Wallet Import Format) format."""
 
     def generate_address_bitcoin():
@@ -44,13 +50,29 @@ def list_addresses() -> List[AddressInDB]:
     return [address for address in addresses]
 
 
-def create_address(address: AddressCreate) -> AddressCreate:
-    address.address, private_key = _generate_address(address.currency)
-    print(private_key)
-    print(type(private_key))
+def insert_address_into_db(address: AddressCreate) -> AddressCreate:
     _address = Addresses.create(**dict(address))
     return AddressInDB(**(_address.__data__))
 
 
-def process_address_data_insertion():
-    pass
+def insert_encrypted_private_key_into_db(private_key_obj: PrivateKeyCreate):
+    _enc_pvt_key = PrivateKeys.create(**dict(private_key_obj))
+    return PrivateKeyInDB(**(_enc_pvt_key.__data__))
+
+
+def process_address_data_insertion(address: AddressCreate):
+    address.address, private_key = _generate_address_and_private_key(address.currency)
+    inserted_address = insert_address_into_db(address)
+
+    encrypted_private_key = encrypt_private_key(private_key)
+    inserted_private_key = insert_encrypted_private_key_into_db(
+        PrivateKeyCreate(
+            address=address.address,
+            key=encrypted_private_key,
+        )
+    )
+
+    return {
+        "address": inserted_address,
+        "private_key": inserted_private_key,
+    }

@@ -30,3 +30,7 @@ def encrypt_private_key(private_key: str) -> bytes:
 def decrypt_private_key(encrypted_key: bytes) -> str:
     fernet_key = load_fernet_key_from_file()
     return fernet_key.decrypt(encrypted_key).decode()
+
+
+def dev_fernet_key_setup():
+    dumping_fernet_key_into_file(generating_fernet_key())
