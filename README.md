@@ -1,4 +1,4 @@
-## Project Name
+## API - Generating Valid Cryptocurrency Addresses 
 
 The project is a REST API that generates cryptocurrency addresses and stores them in a database. It currently supports Bitcoin and Ethereum Crypto currencies and the corresponding private keys are encrypted before storage using a Fernet key.
 
