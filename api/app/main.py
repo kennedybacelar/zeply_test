@@ -35,14 +35,22 @@ def list_addresses_():
 
 @app.on_event("startup")
 async def startup_event():
+    _remove_config_files()
     init_db()
     dev_fernet_key_setup()
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    os.remove(DB_STR_CONNECTION)
-    os.remove(FERNET_KEY_FILE_PATH)
+    _remove_config_files()
+
+
+def _remove_config_files():
+    if os.path.exists(DB_STR_CONNECTION):
+        os.remove(DB_STR_CONNECTION)
+
+    if os.path.exists(FERNET_KEY_FILE_PATH):
+        os.remove(FERNET_KEY_FILE_PATH)
 
 
 if __name__ == "__main__":

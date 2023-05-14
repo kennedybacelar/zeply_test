@@ -1,7 +1,7 @@
 from datetime import datetime
 from peewee import *
 
-DB_STR_CONNECTION = "file::memory:?cache=shared"
+DB_STR_CONNECTION = "my_database.db"
 
 db = SqliteDatabase(DB_STR_CONNECTION)
 
