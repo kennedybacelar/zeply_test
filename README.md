@@ -6,9 +6,21 @@ In order to recover from a disaster, the project uses a x_ref table linking encr
 
 While ideally the backup would be kept in a separate database, for development purposes the encryption and decryption key is generated every time the server is run. In a production environment, the key should be stored outside the code base and only accessible to the server hosting the application.
 
-## Installation
+## Installation and Running
 
-Clone the repository and navigate to the project directory. Run `docker-compose up` to start the API.
+1. Clone the repository and navigate to the project directory.
+
+2. Run `docker-compose up` to start the API in a Docker container.
+
+3. To run the tests, execute the following command inside the running Docker container:
+
+    ```
+    docker exec zeply-api pytest
+    ```
+
+    This will run all the tests in the `tests/` directory.
+
+Note: The `docker exec` command runs a command in a running container, and `zeply-api` is the name of the container as specified in the `container_name` field in the `docker-compose.yml` file.
 
 ## API Usage
 
