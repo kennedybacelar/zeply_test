@@ -6,22 +6,42 @@ In order to recover from a disaster, the project uses a x_ref table linking encr
 
 While ideally the backup would be kept in a separate database, for development purposes the encryption and decryption key is generated every time the server is run. In a production environment, the key should be stored outside the code base and only accessible to the server hosting the application.
 
-## Installation and Running
+## Installation and Running with Docker
 
-1. Clone the repository and navigate to the project directory.
+1. Clone the repository and navigate to the project directory. To start the API in a Docker container run at the root of the project:
+    
+    ```
+    docker-compose up
+    ```
 
-2. Run `docker-compose up` to start the API in a Docker container.
-
-3. To run the tests, execute the following command inside the running Docker container:
+2. You can run the tests by executing the following command at the root of the project:
 
     ```
     docker exec zeply-api python -m pytest -v tests
     ```
 
-    This will run all the tests in the `tests/` directory.
+    This will execute the tests inside the running container at `tests/` directory.
 
-Note: The `docker exec` command runs a command in a running container, and `zeply-api` is the name of the container as specified in the `container_name` field in the `docker-compose.yml` file.
+## Installation and Running without Docker
 
+The application works over an Ubuntu system and with Python 3.10.
+
+1. Clone the repository locally.
+2. Navigate to the api/ folder.
+3. Install the requirements by running:
+    ```
+    pip install -r requirements.txt
+    ```
+4. Run the server by entering the command from the api/ folder:
+    ```
+    python -m app.main
+    ```
+5. This will make the server run locally, and the test message can be checked from the browser by hitting the URL http://localhost:8020.
+6. To run the tests, also from the api/ directory, enter the command:
+    ```
+    python -m pytest -v tests.
+    ```
+    
 ## API Usage
 
 The API has four endpoints:
