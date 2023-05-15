@@ -5,3 +5,4 @@ peewee==3.16.2
 web3==6.3.0
 cryptography==36.0.1
 eth_tester==0.9.0b1
+httpx==0.24.0
