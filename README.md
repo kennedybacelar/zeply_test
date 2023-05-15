@@ -58,6 +58,7 @@ Example payload:
 "currency": "btc",
 "label": "My Bitcoin Address"
 }
+```
 
 ## Technologies Used
 
@@ -68,4 +69,4 @@ Example payload:
 
 ## Acknowledgements
 
-This API was developed for an assessment test of Zeply.
+This API was developed for an assessment test of Zeply. Developed by Kennedy Bacelar.
