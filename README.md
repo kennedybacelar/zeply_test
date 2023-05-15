@@ -39,9 +39,9 @@ The application works over an Ubuntu system and with Python 3.10.
 5. This will make the server run locally, and the test message can be checked from the browser by hitting the URL http://localhost:8020.
 6. To run the tests, also from the api/ directory, enter the command:
     ```
-    python -m pytest -v tests.
+    python -m pytest -v tests
     ```
-    
+
 ## API Usage
 
 The API has four endpoints:
