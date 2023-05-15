@@ -1,7 +1,8 @@
 import os
 import uvicorn
-from fastapi import FastAPI
-from models.models import AddressCreate
+from typing import Dict, List, Union
+from fastapi import FastAPI, HTTPException
+from models.models import AddressCreate, AddressInDB, PrivateKeyInDB
 from db.db_config import init_db, DB_STR_CONNECTION
 
 from .core import process_address_data_insertion, list_addresses, get_address
@@ -15,21 +16,31 @@ PORT = os.environ.get("PORT") or 8020
 
 @app.get("/")
 def home_():
-    return {"message": "zeply test"}
+    return {"message": "Welcome to the Zeply API"}
 
 
-@app.post("/addresses/generate")
-async def generate_address_(address: AddressCreate):
-    return process_address_data_insertion(address)
+@app.post(
+    "/addresses/generate", response_model=Dict[str, Union[AddressInDB, PrivateKeyInDB]]
+)
+async def create_address(
+    address: AddressCreate,
+) -> Dict[str, Union[AddressInDB, PrivateKeyInDB]]:
+    address = process_address_data_insertion(address)
+    if not address:
+        raise HTTPException(status_code=400, detail="Address creation failed")
+    return address
 
 
-@app.get("/addresses/{address_id}")
-def get_address_(address_id: int):
-    return get_address(address_id)
+@app.get("/addresses/{address_id}", response_model=AddressInDB)
+def read_address(address_id: int) -> AddressInDB:
+    address = get_address(address_id)
+    if not address:
+        raise HTTPException(status_code=404, detail="Address not found")
+    return address
 
 
-@app.get("/addresses")
-def list_addresses_():
+@app.get("/addresses", response_model=List[AddressInDB])
+def read_addresses() -> List[AddressInDB]:
     return list_addresses()
 
 
