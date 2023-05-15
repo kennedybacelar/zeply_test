@@ -49,7 +49,15 @@ The API has four endpoints:
 - `GET /`: Returns a test message.
 - `GET /addresses`: Returns a list of all addresses stored in the database.
 - `GET /addresses/{address_id}`: Returns a specific address with the given ID.
-- `POST /addresses/generate`: Generates a new cryptocurrency address and stores it in the database. The request body should include the `currency` parameter, which should be set to either `btc` or `eth`.
+- `POST /addresses/generate`: Generates a new cryptocurrency address and stores it in the database. The request body should include the `currency` parameter, which is mandatory and should be set to either `btc` or `eth`.. All other parameters are optional.
+
+Example payload:
+
+```json
+{
+"currency": "btc",
+"label": "My Bitcoin Address"
+}
 
 ## Technologies Used
 
@@ -60,4 +68,4 @@ The API has four endpoints:
 
 ## Acknowledgements
 
-The project was built by Kennedy Bacelar as an assessment test.
+This API was developed for an assessment test of Zeply.
