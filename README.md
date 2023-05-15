@@ -15,7 +15,7 @@ While ideally the backup would be kept in a separate database, for development p
 3. To run the tests, execute the following command inside the running Docker container:
 
     ```
-    docker exec zeply-api pytest
+    docker exec zeply-api python -m pytest -v tests
     ```
 
     This will run all the tests in the `tests/` directory.
