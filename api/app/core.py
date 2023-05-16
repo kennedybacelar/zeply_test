@@ -14,7 +14,7 @@ from web3 import Web3, EthereumTesterProvider
 from .utils import encrypt_private_key, decrypt_private_key
 
 
-def _generate_address_and_private_key(coin: Coin) -> Tuple(str, bytes):
+def _generate_address_and_private_key(coin: Coin) -> Tuple[str, bytes]:
     """
     Generate a cryptocurrency address and its corresponding private key in hexadecimal format,
     based on the specified cryptocurrency coin type.
