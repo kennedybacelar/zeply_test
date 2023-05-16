@@ -2,10 +2,15 @@ import os
 import uvicorn
 from typing import Dict, List, Union
 from fastapi import FastAPI, HTTPException
-from models.models import AddressCreate, AddressInDB, PrivateKeyInDB
+from models.models import AddressCreate, AddressInDB, PrivateKeyInDB, PrivateKeyReturn
 from db.db_config import init_db, DB_STR_CONNECTION
 
-from .core import process_address_data_insertion, list_addresses, get_address
+from .core import (
+    process_address_data_insertion,
+    list_addresses,
+    get_address,
+    get_private_key,
+)
 from .utils import dev_fernet_key_setup, FERNET_KEY_FILE_PATH
 
 __author__ = "Kennedy Bacelar"
@@ -37,6 +42,17 @@ def read_address(address_id: int) -> AddressInDB:
     if not address:
         raise HTTPException(status_code=404, detail="Address not found")
     return address
+
+
+@app.get("/private-key/{address}", response_model=PrivateKeyReturn)
+def read_address(address: str) -> PrivateKeyReturn:
+    private_key = get_private_key(address)
+    if not address:
+        raise HTTPException(
+            status_code=404,
+            detail="Address not found. Hence not able to fetch private-key data",
+        )
+    return private_key
 
 
 @app.get("/addresses", response_model=List[AddressInDB])

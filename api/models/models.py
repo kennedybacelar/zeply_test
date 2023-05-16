@@ -36,3 +36,9 @@ class PrivateKeyInDB(PrivateKeyCreate):
 class AddressTestAssertFormat(BaseModel):
     address: str
     currency: str
+
+
+class PrivateKeyReturn(BaseModel):
+    address: str
+    encrypted_key: str
+    decrypted_key: str

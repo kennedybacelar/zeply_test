@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 import secrets
 from pycoin.networks.registry import network_for_netcode
 from models.models import (
@@ -7,13 +7,14 @@ from models.models import (
     AddressInDB,
     PrivateKeyCreate,
     PrivateKeyInDB,
+    PrivateKeyReturn,
 )
 from db.db_config import get_db_connection, Addresses, PrivateKeys
 from web3 import Web3, EthereumTesterProvider
-from .utils import encrypt_private_key
+from .utils import encrypt_private_key, decrypt_private_key
 
 
-def _generate_address_and_private_key(coin: Coin):
+def _generate_address_and_private_key(coin: Coin) -> Tuple(str, bytes):
     """
     Generate a cryptocurrency address and its corresponding private key in hexadecimal format,
     based on the specified cryptocurrency coin type.
@@ -47,10 +48,20 @@ def _generate_address_and_private_key(coin: Coin):
     return coin_vs_function[coin]()
 
 
-def get_address(id: int):
+def get_address(id: int) -> AddressInDB:
     with get_db_connection():
         address = Addresses.get_or_none(id=id)
     return AddressInDB(**(address.__data__)) if address else None
+
+
+def get_private_key(address: str) -> PrivateKeyReturn:
+    with get_db_connection():
+        private_key = PrivateKeys.get_or_none(address=address)
+    return PrivateKeyReturn(
+        address=address,
+        encrypted_key=private_key.key,
+        decrypted_key=decrypt_private_key(private_key.key),
+    )
 
 
 def list_addresses() -> List[AddressInDB]:
