@@ -49,6 +49,7 @@ The API has four endpoints:
 - `GET /`: Returns a test message.
 - `GET /addresses`: Returns a list of all addresses stored in the database.
 - `GET /addresses/{address_id}`: Returns a specific address with the given ID.
+- `GET /private-key/{address}`: Returns the private key associated with the given address, if it exists.
 - `POST /addresses/generate`: Generates a new cryptocurrency address and stores it in the database. The request body should include the `currency` parameter, which is mandatory and should be set to either `btc` or `eth`.. All other parameters are optional.
 
 Example payload:
